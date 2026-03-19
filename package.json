@@ -1,0 +1,38 @@
+{
+  "name": "blog-agi-automation-tests",
+  "version": "1.0.0",
+  "description": "Projeto de automação de testes E2E para o Blog do Agi usando Cypress",
+  "main": "index.js",
+  "scripts": {
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "test": "cypress run --headless --browser chrome",
+    "test:firefox": "cypress run --headless --browser firefox",
+    "test:edge": "cypress run --headless --browser edge",
+    "test:all-browsers": "npm run test && npm run test:firefox && npm run test:edge",
+    "test:headed": "cypress run --headed",
+    "test:debug": "cypress run --headed --browser chrome --no-exit",
+    "test:spec": "cypress run --spec",
+    "lint": "eslint cypress --fix",
+    "report": "cypress run --reporter html"
+  },
+  "keywords": [
+    "cypress",
+    "automation",
+    "testing",
+    "e2e",
+    "qa"
+  ],
+  "author": "QA Automation Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@cypress/schematic": "^2.5.1",
+    "cypress": "^13.6.5",
+    "cypress-real-events": "^1.13.0",
+    "eslint": "^8.56.0",
+    "eslint-plugin-cypress": "^2.15.1"
+  },
+  "engines": {
+    "node": "^18.0.0 || ^20.0.0"
+  }
+}

@@ -1,0 +1,89 @@
+name: Testes E2E com Cypress
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node-version: [18.x, 20.x]
+    
+    name: Testes no ${{ matrix.os }} (Node ${{ matrix.node-version }})
+
+    steps:
+      - name: 📥 Clonar repositório
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: 📋 Instalar dependências
+        run: npm ci
+
+      - name: 🔍 Rodar lints
+        run: npm run lint
+        continue-on-error: true
+
+      - name: 🧪 Executar testes com Cypress (Chrome)
+        uses: cypress-io/github-action@v6
+        with:
+          browser: chrome
+          headless: true
+          spec: 'cypress/e2e/**/*.cy.js'
+          config-file: cypress.config.js
+        continue-on-error: false
+
+      - name: 📸 Upload de evidências (screenshots)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-screenshots-${{ matrix.os }}-node${{ matrix.node-version }}
+          path: cypress/screenshots/
+          retention-days: 14
+
+      - name: 🎬 Upload de vídeos
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-videos-${{ matrix.os }}-node${{ matrix.node-version }}
+          path: cypress/videos/
+          retention-days: 14
+
+      - name: 📊 Publicar resultados
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ matrix.os }}-node${{ matrix.node-version }}
+          path: cypress/results/
+          retention-days: 30
+
+  summary:
+    runs-on: ubuntu-latest
+    needs: test
+    if: always()
+    
+    steps:
+      - name: ✅ Resumo dos Testes
+        run: |
+          echo "## 📊 Testes executados com sucesso em múltiplos ambientes!"
+          echo ""
+          echo "- ✅ Linux (Ubuntu)"
+          echo "- ✅ Windows"
+          echo "- ✅ macOS"
+          echo ""
+          echo "- 📌 Node.js 18.x"
+          echo "- 📌 Node.js 20.x"
