@@ -209,26 +209,3 @@ it('Deve fazer algo', () => {
   "eslint": "^8.56.0",
   "eslint-plugin-cypress": "^2.15.1"
 }
-```
-
----
-
-## 📝 Boas Práticas
-
-✅ **DO:**
-- Use seletores do `SearchPage.js`
-- Valide estado do elemento antes de interagir (`.should('be.visible')`)
-- Use `.click()` em vez de `.trigger('click')`
-- Adicione delays ao digitar: `type('texto', { delay: 50 })`
-
-❌ **DON'T:**
-- Hardcode seletores nos testes
-- Use `.trigger('click')` para cliques reais
-- Ignore timeouts sem motivo válido
-- Deixe `it.only` nos commits
-
----
-
-**Versão:** 1.0.0  
-**Última Atualização:** 19 de Março de 2026  
-**Autor:** QA Automation Team
