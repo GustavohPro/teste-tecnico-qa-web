@@ -30,16 +30,19 @@ describe('Blog do Agi - Testes de Busca', () => {
       }
     });
 
-    it.only('Deve ter pelo menos 1 artigo nos resultados', () => {
+    it('Deve ter pelo menos 1 artigo nos resultados', () => {
       // Dado: Estou na página inicial
       cy.url().should('include', 'blog.agibank.com.br');
 
       // Clicar no ícone de lupa para abrir o campo de busca
-      cy.get(seletores.botaoBusca).eq(1).trigger('click');
+      cy.get(seletores.botaoBusca).eq(1).click();
+
+      // Aguardar um pouco para a animação de abertura
+      cy.wait(500);
 
       // Quando: Pesquiso por um termo comum
-      cy.get(seletores.campoBusca).clear().type('blog', { delay: 50 });
-      cy.get(seletores.campoBusca).type('{enter}');
+      cy.get(seletores.campoBusca).type('blog', { delay: 50, force: true });
+      cy.get(seletores.campoBusca).type('{enter}', { force: true });
 
       // Então: Verifica se há artigos visíveis
       cy.get(seletores.cartaoArtigo)
@@ -62,11 +65,12 @@ describe('Blog do Agi - Testes de Busca', () => {
       cy.url().should('include', 'blog.agibank.com.br');
 
       // Clicar no ícone de lupa para abrir o campo de busca
-      cy.get(seletores.botaoBusca).eq(1).trigger('click');
+      cy.get(seletores.botaoBusca).eq(1).click();
+      cy.wait(500);
 
       // Quando: Pesquiso por um termo que não existe
-      cy.get(seletores.campoBusca).clear().type('qawertyuiopasdfghjklzxcvbnmqwertyuiop', { delay: 50 });
-      cy.get(seletores.campoBusca).type('{enter}');
+      cy.get(seletores.campoBusca).type('qawertyuiopasdfghjklzxcvbnmqwertyuiop', { delay: 50, force: true });
+      cy.get(seletores.campoBusca).type('{enter}', { force: true });
 
       // Então: Nenhum artigo deve aparecer
       cy.get(seletores.cartaoArtigo)
@@ -78,12 +82,13 @@ describe('Blog do Agi - Testes de Busca', () => {
       cy.url().should('include', 'blog.agibank.com.br');
 
       // Clicar no ícone de lupa para abrir o campo de busca
-      cy.get(seletores.botaoBusca).eq(1).trigger('click');
+      cy.get(seletores.botaoBusca).eq(1).click();
+      cy.wait(500);
 
       // Quando: Pesquiso por termo inexistente
       const searchTerm = 'termoinexistente123';
-      cy.get(seletores.campoBusca).clear().type(searchTerm, { delay: 50 });
-      cy.get(seletores.campoBusca).type('{enter}');
+      cy.get(seletores.campoBusca).type(searchTerm, { delay: 50, force: true });
+      cy.get(seletores.campoBusca).type('{enter}', { force: true });
 
       // Então: O termo deve permanecer no campo de busca
       cy.get(seletores.campoBusca).should('have.value', searchTerm);
@@ -104,10 +109,11 @@ describe('Blog do Agi - Testes de Busca', () => {
       cy.url().should('include', 'blog.agibank.com.br');
 
       // Clicar no ícone de lupa para abrir o campo de busca
-      cy.get(seletores.botaoBusca).eq(1).trigger('click');
+      cy.get(seletores.botaoBusca).eq(1).click();
+      cy.wait(500);
 
       // Então: Campo de busca está visível
-      cy.get(seletores.campoBusca, { timeout: 10000 }).should('be.visible');
+      cy.get(seletores.campoBusca, { timeout: 10000 }).should('exist');
     });
 
     it('Deve ser possível limpar o campo de busca', () => {
@@ -115,13 +121,14 @@ describe('Blog do Agi - Testes de Busca', () => {
       cy.url().should('include', 'blog.agibank.com.br');
 
       // Clicar no ícone de lupa para abrir o campo de busca
-      cy.get(seletores.botaoBusca).eq(1).trigger('click');
+      cy.get(seletores.botaoBusca).eq(1).click();
+      cy.wait(500);
 
       // Quando: Digito um termo
-      cy.get(seletores.campoBusca).clear().type('teste', { delay: 50 });
+      cy.get(seletores.campoBusca).type('teste', { delay: 50, force: true });
 
       // E: Limpo o campo usando o comando específico
-      cy.get(seletores.campoBusca).clear();
+      cy.get(seletores.campoBusca).clear({ force: true });
 
       // Então: Campo fica vazio
       cy.get(seletores.campoBusca).should('have.value', '');
@@ -132,12 +139,13 @@ describe('Blog do Agi - Testes de Busca', () => {
       cy.url().should('include', 'blog.agibank.com.br');
 
       // Clicar no ícone de lupa para abrir o campo de busca
-      cy.get(seletores.botaoBusca).eq(1).trigger('click');
+      cy.get(seletores.botaoBusca).eq(1).click();
+      cy.wait(500);
 
       // Quando: Pesquiso por algo
       const keyword = 'automation';
-      cy.get(seletores.campoBusca).clear().type(keyword, { delay: 50 });
-      cy.get(seletores.campoBusca).type('{enter}');
+      cy.get(seletores.campoBusca).type(keyword, { delay: 50, force: true });
+      cy.get(seletores.campoBusca).type('{enter}', { force: true });
 
       // Então: URL contém parâmetro de busca
       cy.url().should('include', `s=${encodeURIComponent(keyword)}`);

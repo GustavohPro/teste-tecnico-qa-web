@@ -15,7 +15,7 @@ const seletores = {
   // ARTIGOS / POSTS
   // =====================================================
   containerArtigos: '.uagb-post-grid-wrapper',
-  cartaoArtigo: '#post-4102 > .ast-post-format- > .post-content > .entry-title > a',
+  cartaoArtigo: 'article.post, .post-content, .entry-title a',
   tituloArtigo: '.uagb-article-title a',
   resumoArtigo: '.uagb-article-text',
   imagemArtigo: '.uagb-article-image img',
